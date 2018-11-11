@@ -67,6 +67,7 @@ module.exports = {
         options: {
           plugins: [
             "@babel/plugin-proposal-class-properties",
+            "@babel/plugin-syntax-dynamic-import",
             "@babel/proposal-object-rest-spread",
             ...(DEV ? ["react-hot-loader/babel"] : [])
           ],
@@ -80,6 +81,7 @@ module.exports = {
         options: {
           plugins: [
             "@babel/proposal-class-properties",
+            "@babel/plugin-syntax-dynamic-import",
             "@babel/proposal-object-rest-spread",
             ...(DEV ? ["react-hot-loader/babel"] : [])
           ],
@@ -157,7 +159,7 @@ module.exports = {
   },
 
   resolve: {
-    extensions: [".js", ".jsx", ".ts", ".tsx"],
+    extensions: [".js", ".jsx", ".ts", ".tsx", ".wasm"],
     modules: ["node_modules", path.resolve(__dirname, "src")],
     alias: {
       "@cfg": path.resolve(__dirname, "config"),

@@ -1,0 +1,9 @@
+target/release
+target/.rustc_info.json
+target/wasm32-unknown-unknown/release/.fingerprint
+target/wasm32-unknown-unknown/release/build
+target/wasm32-unknown-unknown/release/deps
+target/wasm32-unknown-unknown/release/examples
+target/wasm32-unknown-unknown/release/incremental
+target/wasm32-unknown-unknown/release/native
+target/wasm32-unknown-unknown/release/.cargo-lock

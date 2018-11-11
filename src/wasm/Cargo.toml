@@ -1,0 +1,18 @@
+[package]
+name = "synthrs-wasm"
+version = "0.1.0"
+authors = ["Ng Guoyou <ng.guoyou@gmail.com>"]
+edition = "2018"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+wasm-bindgen = "0.2.27"
+
+[dependencies.synthrs]
+git = "https://github.com/gyng/synthrs"
+rev = "4c33bab4567e2c3b2f12a1b103409e3392a02df9"
+
+[profile.release]
+lto = true
