@@ -169,7 +169,7 @@ dependencies = [
 [[package]]
 name = "synthrs"
 version = "0.1.0"
-source = "git+https://github.com/gyng/synthrs?rev=4c33bab4567e2c3b2f12a1b103409e3392a02df9#4c33bab4567e2c3b2f12a1b103409e3392a02df9"
+source = "git+https://github.com/gyng/synthrs?rev=cb33a75b1891e97781faf5ee2c27fcd78ab984a3#cb33a75b1891e97781faf5ee2c27fcd78ab984a3"
 dependencies = [
  "byteorder 1.2.7 (registry+https://github.com/rust-lang/crates.io-index)",
  "num 0.2.0 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -180,7 +180,7 @@ dependencies = [
 name = "synthrs-wasm"
 version = "0.1.0"
 dependencies = [
- "synthrs 0.1.0 (git+https://github.com/gyng/synthrs?rev=4c33bab4567e2c3b2f12a1b103409e3392a02df9)",
+ "synthrs 0.1.0 (git+https://github.com/gyng/synthrs?rev=cb33a75b1891e97781faf5ee2c27fcd78ab984a3)",
  "wasm-bindgen 0.2.27 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
@@ -278,7 +278,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 "checksum rand_core 0.2.2 (registry+https://github.com/rust-lang/crates.io-index)" = "1961a422c4d189dfb50ffa9320bf1f2a9bd54ecb92792fb9477f99a1045f3372"
 "checksum rand_core 0.3.0 (registry+https://github.com/rust-lang/crates.io-index)" = "0905b6b7079ec73b314d4c748701f6931eb79fd97c668caa3f1899b22b32c6db"
 "checksum syn 0.15.19 (registry+https://github.com/rust-lang/crates.io-index)" = "39054bb43f2c5e4f3aef47718a391bf397c1b820fefc86f467d4d354f67bf7ef"
-"checksum synthrs 0.1.0 (git+https://github.com/gyng/synthrs?rev=4c33bab4567e2c3b2f12a1b103409e3392a02df9)" = "<none>"
+"checksum synthrs 0.1.0 (git+https://github.com/gyng/synthrs?rev=cb33a75b1891e97781faf5ee2c27fcd78ab984a3)" = "<none>"
 "checksum unicode-xid 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)" = "fc72304796d0818e357ead4e000d19c9c174ab23dc11093ac919054d20a6a7fc"
 "checksum wasm-bindgen 0.2.27 (registry+https://github.com/rust-lang/crates.io-index)" = "ddabe7a233fc293b35f9754067580906c14b5a14b68da67d21ac109f8624c3fe"
 "checksum wasm-bindgen-backend 0.2.27 (registry+https://github.com/rust-lang/crates.io-index)" = "4420cb4101491fa91a0aa488584bf359ec4d805667982d3de37ad18c1adc6c62"

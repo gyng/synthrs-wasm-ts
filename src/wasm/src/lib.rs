@@ -1,7 +1,25 @@
 use wasm_bindgen::prelude::*;
 
-use synthrs::synthesizer::make_samples;
+use std::io::Cursor;
+use synthrs::midi::read_midi;
+use synthrs::synthesizer::{make_samples, make_samples_from_midi};
 use synthrs::wave::sine_wave;
+
+#[wasm_bindgen]
+pub fn synth_midi(bytes: Box<[u8]>) -> Option<Box<[f32]>> {
+    let mut cursor = Cursor::new(bytes);
+
+    if let Ok(song) = read_midi(&mut cursor) {
+        let samples: Vec<f32> = make_samples_from_midi(sine_wave, 44_100, true, song)
+            .unwrap()
+            .iter()
+            .map(|f| *f as f32)
+            .collect();
+        return Some(samples.into_boxed_slice());
+    }
+
+    None
+}
 
 #[wasm_bindgen]
 pub fn dialtone(len_s: f64, sample_rate: usize) -> Vec<f32> {

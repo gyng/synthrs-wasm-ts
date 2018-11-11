@@ -119,16 +119,16 @@ module.exports = {
   ],
 
   optimization: {
-    splitChunks: {
-      cacheGroups: {
-        vendors: {
-          test: /\/node_modules\//,
-          filename: "vendor.[hash:7].js",
-          name: "vendor",
-          chunks: "all"
-        }
-      }
-    }
+    // splitChunks: {
+    //   cacheGroups: {
+    //     vendors: {
+    //       test: /\/node_modules\//,
+    //       filename: "vendor.[hash:7].js",
+    //       name: "vendor",
+    //       chunks: "all"
+    //     }
+    //   }
+    // }
   },
 
   // Using cheap-eval-source-map for build times
