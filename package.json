@@ -41,6 +41,7 @@
     "react-router-dom": "^4.2.2",
     "redux": "^4.0.1",
     "redux-thunk": "^2.2.0",
+    "text-encoding": "^0.7.0",
     "typesafe-actions": "^2.0.4"
   },
   "devDependencies": {

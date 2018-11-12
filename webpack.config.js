@@ -107,6 +107,14 @@ module.exports = {
       template: "./src/index.html",
       favicon: "./src/static/favicon.ico"
     }),
+
+    // MS Edge bindgen polyfill
+    // https://rustwasm.github.io/wasm-bindgen/reference/browser-support.html
+    new webpack.ProvidePlugin({
+      TextDecoder: ["text-encoding", "TextDecoder"],
+      TextEncoder: ["text-encoding", "TextEncoder"]
+    }),
+
     // Generate .gz for production builds
     // Consider adding brotli-webpack-plugin if your server supports .br
     ...(PROD
