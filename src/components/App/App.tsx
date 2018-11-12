@@ -219,9 +219,11 @@ t => {
 
               return (
                 <li className={styles.waventry} key={w.url}>
-                  <a href={w.url} download={wavFilename}>
-                    {wavFilename}
-                  </a>
+                  <div>
+                    <a href={w.url} download={wavFilename}>
+                      {wavFilename}
+                    </a>
+                  </div>
                   <audio
                     className={styles.player}
                     src={w.url}

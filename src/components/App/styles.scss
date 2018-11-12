@@ -47,8 +47,11 @@ textarea {
   margin: var(--m-m) 0;
   animation: slide 0.4s ease-in-out 1 forwards;
 
-  & > a {
-    text-decoration: none;
+  & > div {
+    & > a {
+      text-decoration: none;
+    }
+
     margin-bottom: var(--m-s);
   }
 }
