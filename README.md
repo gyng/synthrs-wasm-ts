@@ -4,6 +4,7 @@ Example repo for synthrs integration with wasm and typescript (using [jsapp-boil
 
 * For the Rust code: see https://github.com/gyng/synthrs-wasm-ts/tree/master/src/wasm
 * For the JS/TS glue: see https://github.com/gyng/synthrs-wasm-ts/blob/master/src/components/App/App.tsx
+* For synthrs: see https://github.com/gyng/synthrs
 
 ### Changes needed to support wasm
 
