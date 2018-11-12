@@ -2,7 +2,10 @@
 
 Example repo for synthrs integration with wasm and typescript (using [jsapp-boilerplate](https://github.com/gyng/jsapp-boilerplate))
 
-Changed needed to support wasm
+* For the Rust code: see https://github.com/gyng/synthrs-wasm-ts/tree/master/src/wasm
+* For the JS/TS glue: see https://github.com/gyng/synthrs-wasm-ts/blob/master/src/components/App/App.tsx
+
+### Changes needed to support wasm
 
 * tsconfig.json: `target: "esnext"`
 * `yarn add --dev @babel/plugin-syntax-dynamic-import`
