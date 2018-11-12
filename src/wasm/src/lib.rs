@@ -5,7 +5,7 @@ use std::io::Cursor;
 
 use synthrs::midi::read_midi;
 use synthrs::synthesizer::{make_samples, make_samples_from_midi, quantize_samples};
-use synthrs::wave::square_wave;
+use synthrs::wave::{sine_wave, square_wave};
 use synthrs::writer::write_wav;
 
 #[wasm_bindgen]
@@ -58,7 +58,7 @@ pub fn synth_midi(midi_bytes: Box<[u8]>) -> Option<Box<[f32]>> {
 #[wasm_bindgen]
 pub fn dialtone(len_s: f64, sample_rate: usize) -> Vec<f32> {
     make_samples(len_s, sample_rate, |t: f64| -> f64 {
-        0.5 * (square_wave(350.0)(t) + square_wave(440.0)(t))
+        0.5 * (sine_wave(350.0)(t) + sine_wave(440.0)(t))
     }).iter()
     .map(|f| *f as f32)
     .collect()
@@ -68,7 +68,7 @@ pub fn dialtone(len_s: f64, sample_rate: usize) -> Vec<f32> {
 pub fn busy(len_s: f64, sample_rate: usize) -> Vec<f32> {
     make_samples(len_s, sample_rate, |t: f64| -> f64 {
         if t % 1.0 < 0.5 {
-            0.5 * (square_wave(480.0)(t) + square_wave(620.0)(t))
+            0.5 * (sine_wave(480.0)(t) + sine_wave(620.0)(t))
         } else {
             0.0
         }
@@ -81,10 +81,10 @@ pub fn busy(len_s: f64, sample_rate: usize) -> Vec<f32> {
 pub fn offhook(len_s: f64, sample_rate: usize) -> Vec<f32> {
     make_samples(len_s, sample_rate, |t: f64| -> f64 {
         if t % 0.2 < 0.1 {
-            0.25 * (square_wave(1400.0)(t)
-                + square_wave(2060.0)(t)
-                + square_wave(2450.0)(t)
-                + square_wave(2600.0)(t))
+            0.25 * (sine_wave(1400.0)(t)
+                + sine_wave(2060.0)(t)
+                + sine_wave(2450.0)(t)
+                + sine_wave(2600.0)(t))
         } else {
             0.0
         }
@@ -97,7 +97,7 @@ pub fn offhook(len_s: f64, sample_rate: usize) -> Vec<f32> {
 pub fn ring(len_s: f64, sample_rate: usize) -> Vec<f32> {
     make_samples(len_s, sample_rate, |t: f64| -> f64 {
         if t % 6.0 < 2.0 {
-            0.50 * (square_wave(440.0)(t) + square_wave(480.0)(t))
+            0.50 * (sine_wave(440.0)(t) + sine_wave(480.0)(t))
         } else {
             0.0
         }
