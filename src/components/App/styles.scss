@@ -1,17 +1,24 @@
-.sectionMidi {
+.section {
   display: flex;
   flex-direction: column;
+  margin-bottom: var(--m-xl);
 }
 
 .player {
   max-width: 400px;
 }
 
-input[type="file"] {
+input[type="file"],
+textarea {
   border: solid 1px var(--grey-40);
   border-radius: var(--curve);
   padding: var(--m-l);
   max-width: 400px;
+}
+
+textarea {
+  padding: var(--m-l);
+  min-height: 180px;
 }
 
 .wavlist {
@@ -53,4 +60,12 @@ input[type="file"] {
 .small {
   margin-top: var(--m-s);
   color: var(--grey-40);
+}
+
+details {
+  cursor: pointer;
+}
+
+.smallLink {
+  color: inherit;
 }

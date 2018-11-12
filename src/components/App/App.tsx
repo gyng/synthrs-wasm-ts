@@ -14,6 +14,8 @@ require("../../styles/root.scss");
 // Legacy CSS are supported
 require("./legacy.css");
 
+const sampleMidi = require("./greensleeves.mid");
+
 // tsconfig.json: target: "esnext"
 // yarn add --dev @babel/plugin-syntax-dynamic-import
 // Add "@babel/plugin-syntax-dynamic-import" to webpack babel plugins
@@ -33,7 +35,11 @@ let synth_midi: (arg0: Uint8Array) => Float32Array;
 // tslint:disable-next-line
 let synth_midi_wav: (arg0: Uint8Array) => Uint8Array;
 
+// tslint:disable-next-line
+let js_generator: (len: number, fn: any) => Float32Array;
+
 rust.then(obj => {
+  js_generator = obj.js_generator;
   synth_midi_wav = obj.synth_midi_wav;
   synth_midi = obj.synth_midi;
   tones.dialtone = obj.dialtone;
@@ -83,6 +89,7 @@ export interface IWav {
 }
 
 export interface IInnerAppState {
+  generatorCode: string;
   wavs: IWav[];
   wavsInflight: number;
 }
@@ -90,7 +97,22 @@ export interface IInnerAppState {
 class InnerApp extends React.Component<{}, IInnerAppState> {
   public constructor(props: {}) {
     super(props);
-    this.state = { wavs: [], wavsInflight: 0 };
+    this.state = {
+      generatorCode: `// Write a JS function!
+// Takes in (t: number), the time
+// Returns (amplitude: number) between -1 and 1
+
+t => {
+  const sine = frequency =>
+    Math.sin(t * frequency * 2 * Math.PI);
+
+  // Try changing the 👇 frequencies 👇 here
+  return 0.5 *  (sine(350)  +  sine(440));
+};
+`,
+      wavs: [],
+      wavsInflight: 0
+    };
   }
 
   public render() {
@@ -98,14 +120,20 @@ class InnerApp extends React.Component<{}, IInnerAppState> {
       <div className={`app ${styles.grid}`}>
         <h1>WASM Synthesiser</h1>
 
-        <p>
-          This uses <a href="https://github.com/gyng/synthrs">synthrs</a> to
-          generate audio. Checked to work on Firefox and Chrome.{" "}
-          <a href="https://github.com/gyng/synthrs-wasm-ts">Source</a>
-        </p>
+        <div style={{ maxWidth: 600 }}>
+          <p>
+            <a href="https://github.com/gyng/synthrs-wasm-ts">GitHub</a>{" "}
+            &middot; This demo uses{" "}
+            <a href="https://github.com/gyng/synthrs">synthrs</a>, a toy
+            synthesiser library written in Rust, to generate audio. Rust code is
+            compiled down to WebAssembly (.wasm), glued to JS/TS using
+            wasm-bindgen, and then hooked up using webpack. Checked to work on
+            both Firefox and Chrome.
+          </p>
+        </div>
 
-        <h2>Convert MIDI to WAV and play it</h2>
-        <div className={styles.sectionMidi}>
+        <div className={styles.section}>
+          <h2>Convert a MIDI to WAV and play it</h2>
           <input
             type="file"
             multiple
@@ -165,7 +193,14 @@ class InnerApp extends React.Component<{}, IInnerAppState> {
           />
           <small className={styles.small}>
             rendered as square waves &middot; drag and drop, multiple files
-            accepted
+            accepted &middot;{" "}
+            <a
+              className={styles.smallLink}
+              href={sampleMidi}
+              download="sample.mid"
+            >
+              sample
+            </a>
             {this.state.wavsInflight > 0 && (
               <>
                 {" "}
@@ -183,7 +218,7 @@ class InnerApp extends React.Component<{}, IInnerAppState> {
               return (
                 <li className={styles.waventry} key={w.url}>
                   <a href={w.url} download={wavFilename}>
-                    💾 {wavFilename}
+                    {wavFilename}
                   </a>
                   <audio
                     className={styles.player}
@@ -197,39 +232,81 @@ class InnerApp extends React.Component<{}, IInnerAppState> {
           </ul>
         </div>
 
-        <h2>Or just play a predefined tone</h2>
-        <button
-          onClick={() => {
-            playTone("busy");
-          }}
-        >
-          Busy
-        </button>
-        <button
-          onClick={() => {
-            playTone("offhook");
-          }}
-        >
-          Offhook
-        </button>
-        <button
-          onClick={() => {
-            playTone("dialtone");
-          }}
-        >
-          Dial
-        </button>
-        <button
-          onClick={() => {
-            playTone("ring");
-          }}
-        >
-          Ring
-        </button>
+        <div className={styles.section}>
+          <h2>Or use a JavaScript function</h2>
+
+          <textarea
+            spellCheck={false}
+            value={this.state.generatorCode}
+            onChange={event => {
+              this.setState({ generatorCode: event.target.value });
+            }}
+          />
+          <small className={styles.small}>
+            this textbox will be eval'd and passed into Rust!
+          </small>
+          <div>
+            <button
+              style={{
+                marginTop: "var(--m-s)"
+              }}
+              onClick={() => {
+                const length = 5;
+                let fn;
+                try {
+                  // tslint:disable-next-line
+                  fn = eval(this.state.generatorCode);
+                } catch (e) {
+                  alert(e);
+                }
+                const samples = js_generator(length, fn);
+                playSamples(samples, length, true);
+              }}
+            >
+              Generate for 5 seconds
+            </button>
+          </div>
+        </div>
+
+        <div className={styles.section}>
+          <h2>Or just play a predefined tone</h2>
+          <div>
+            <button
+              onClick={() => {
+                playTone("busy");
+              }}
+            >
+              Busy
+            </button>
+            <button
+              onClick={() => {
+                playTone("offhook");
+              }}
+            >
+              Offhook
+            </button>
+            <button
+              onClick={() => {
+                playTone("dialtone");
+              }}
+            >
+              Dial
+            </button>
+            <button
+              onClick={() => {
+                playTone("ring");
+              }}
+            >
+              Ring
+            </button>
+          </div>
+        </div>
 
         <details className={styles.directMidi}>
-          <summary>Play a MIDI file directly using WebAudio (example)</summary>
-          <div className={styles.sectionMidi}>
+          <summary>
+            You can also play a MIDI file directly using WebAudio
+          </summary>
+          <div className={styles.section}>
             <input
               type="file"
               onChange={event => {

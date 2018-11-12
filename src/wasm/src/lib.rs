@@ -1,10 +1,25 @@
+use js_sys;
 use wasm_bindgen::prelude::*;
 
 use std::io::Cursor;
+
 use synthrs::midi::read_midi;
 use synthrs::synthesizer::{make_samples, make_samples_from_midi, quantize_samples};
 use synthrs::wave::square_wave;
 use synthrs::writer::write_wav;
+
+#[wasm_bindgen]
+pub fn js_generator(len_s: f64, func: &js_sys::Function) -> Vec<f32> {
+    make_samples(len_s, 44_100, move |t: f64| -> f64 {
+        let this = JsValue::NULL;
+        func.call1(&this, &JsValue::from_f64(t))
+            .unwrap()
+            .as_f64()
+            .unwrap()
+    }).iter()
+    .map(|f| *f as f32)
+    .collect()
+}
 
 #[wasm_bindgen]
 pub fn synth_midi_wav(midi_bytes: Box<[u8]>) -> Option<Box<[u8]>> {
