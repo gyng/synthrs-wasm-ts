@@ -1,4 +1,6 @@
 /* tslint:disable */
+export function synth_midi_wav(arg0: Uint8Array): Uint8Array;
+
 export function synth_midi(arg0: Uint8Array): Float32Array;
 
 export function dialtone(arg0: number, arg1: number): Float32Array;

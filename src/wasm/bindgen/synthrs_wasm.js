@@ -15,16 +15,8 @@ function passArray8ToWasm(arg) {
     return [ptr, arg.length];
 }
 
-let cachegetFloat32Memory = null;
-function getFloat32Memory() {
-    if (cachegetFloat32Memory === null || cachegetFloat32Memory.buffer !== wasm.memory.buffer) {
-        cachegetFloat32Memory = new Float32Array(wasm.memory.buffer);
-    }
-    return cachegetFloat32Memory;
-}
-
-function getArrayF32FromWasm(ptr, len) {
-    return getFloat32Memory().subarray(ptr / 4, ptr / 4 + len);
+function getArrayU8FromWasm(ptr, len) {
+    return getUint8Memory().subarray(ptr / 1, ptr / 1 + len);
 }
 
 let cachedGlobalArgumentPtr = null;
@@ -41,6 +33,35 @@ function getUint32Memory() {
         cachegetUint32Memory = new Uint32Array(wasm.memory.buffer);
     }
     return cachegetUint32Memory;
+}
+/**
+* @param {Uint8Array} arg0
+* @returns {Uint8Array}
+*/
+export function synth_midi_wav(arg0) {
+    const [ptr0, len0] = passArray8ToWasm(arg0);
+    const retptr = globalArgumentPtr();
+    wasm.synth_midi_wav(retptr, ptr0, len0);
+    const mem = getUint32Memory();
+    const rustptr = mem[retptr / 4];
+    const rustlen = mem[retptr / 4 + 1];
+    if (rustptr === 0) return;
+    const realRet = getArrayU8FromWasm(rustptr, rustlen).slice();
+    wasm.__wbindgen_free(rustptr, rustlen * 1);
+    return realRet;
+
+}
+
+let cachegetFloat32Memory = null;
+function getFloat32Memory() {
+    if (cachegetFloat32Memory === null || cachegetFloat32Memory.buffer !== wasm.memory.buffer) {
+        cachegetFloat32Memory = new Float32Array(wasm.memory.buffer);
+    }
+    return cachegetFloat32Memory;
+}
+
+function getArrayF32FromWasm(ptr, len) {
+    return getFloat32Memory().subarray(ptr / 4, ptr / 4 + len);
 }
 /**
 * @param {Uint8Array} arg0

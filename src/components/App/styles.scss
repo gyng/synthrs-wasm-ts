@@ -4,12 +4,53 @@
 }
 
 .player {
-  margin-top: var(--m-m);
+  max-width: 400px;
 }
 
 input[type="file"] {
-  border: solid 1px var(--ink-80);
+  border: solid 1px var(--grey-40);
   border-radius: var(--curve);
   padding: var(--m-l);
   max-width: 400px;
+}
+
+.wavlist {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+}
+
+@keyframes slide {
+  from {
+    max-height: 0;
+    opacity: 0;
+  }
+  99% {
+    max-height: 200px;
+    opacity: 1;
+  }
+  to {
+    max-height: auto;
+  }
+}
+
+.waventry {
+  display: flex;
+  flex-direction: column;
+  margin: var(--m-m) 0;
+  animation: slide 0.4s ease-in-out 1 forwards;
+
+  & > a {
+    text-decoration: none;
+    margin-bottom: var(--m-s);
+  }
+}
+
+.directMidi {
+  margin-top: var(--m-m);
+}
+
+.small {
+  margin-top: var(--m-s);
+  color: var(--grey-40);
 }

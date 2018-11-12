@@ -2,11 +2,11 @@
 $ rustup default nightly
 $ rustup target add wasm32-unknown-unknown
 $ cargo +nightly install wasm-bindgen-cli
-$ cargo +nightly build --target wasm32-unknown-unknown --release
 
 # In wasm/
 
-$ wasm-bindgen target/wasm32-unknown-unknown/release/rgba2laba.wasm --out-dir wasm
+$ cargo +nightly build --target wasm32-unknown-unknown --release
+$ wasm-bindgen target/wasm32-unknown-unknown/release/synthrs_wasm.wasm --out-dir bindgen
 ```
 
 ## Serving the bundled wasm

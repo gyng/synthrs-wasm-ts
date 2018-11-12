@@ -12,7 +12,7 @@ wasm-bindgen = "0.2.27"
 
 [dependencies.synthrs]
 git = "https://github.com/gyng/synthrs"
-rev = "cb33a75b1891e97781faf5ee2c27fcd78ab984a3"
+rev = "436f69685b0d254a2d0e892648de2d64edffa301"
 
 [profile.release]
 lto = true
