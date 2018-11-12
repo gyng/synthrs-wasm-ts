@@ -126,7 +126,7 @@ t => {
             &middot; This demo uses{" "}
             <a href="https://github.com/gyng/synthrs">synthrs</a>, a toy
             synthesiser library written in Rust, to generate audio. Rust code is
-            compiled down to WebAssembly (.wasm), glued to JS/TS using
+            compiled down to WebAssembly (.wasm), glued to JS/TS using{" "}
             <a href="https://github.com/rustwasm/wasm-bindgen">wasm-bindgen</a>,
             and then hooked up using{" "}
             <a href="https://webpack.js.org/">webpack</a>. Checked to work on
