@@ -1,6 +1,6 @@
 # synthrs-wasm-ts
 
-Example repo for synthrs integration with WebAssembly (via Rust) and TypeScript (using [jsapp-boilerplate](https://github.com/gyng/jsapp-boilerplate)). Works with Firefox, Chrome, and Edge.
+Example repo for synthrs integration with WebAssembly (via Rust) and TypeScript (using [jsapp-boilerplate](https://github.com/gyng/jsapp-boilerplate)). Works with Firefox, Chrome, Safari, and Edge.
 
 - For the Rust code: see [`src/wasm/src/lib.rs`](src/wasm)
 - For the JS/TS glue: see [`src/components/App/App.tsx`](src/components/App/App.tsx)
