@@ -13,12 +13,12 @@ textarea {
   border: solid 1px var(--grey-40);
   border-radius: var(--curve);
   padding: var(--m-l);
-  max-width: 400px;
+  max-width: 440px;
 }
 
 textarea {
   padding: var(--m-l);
-  min-height: 200px;
+  min-height: 240px;
 }
 
 .wavlist {
@@ -32,10 +32,12 @@ textarea {
     max-height: 0;
     opacity: 0;
   }
+
   99% {
     max-height: 200px;
     opacity: 1;
   }
+
   to {
     max-height: auto;
   }

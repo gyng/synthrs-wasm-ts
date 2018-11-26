@@ -1,6 +1,9 @@
 import { hot } from "react-hot-loader";
 
 import * as React from "react";
+
+import { Piano } from "../Piano";
+
 // import { Link, Route, Switch } from "react-router-dom";
 
 // import { config } from "@cfg";
@@ -23,20 +26,20 @@ const sampleMidi = require("./greensleeves.mid");
 // Disable split-chunk-plugins in webpack optimize
 
 // @ts-ignore
-const rust = import("@src/wasm/bindgen/synthrs_wasm");
+export const rust = import("@src/wasm/bindgen/synthrs_wasm");
 
 const tones: {
   [k: string]: (len: number, sampleRate: number) => Float32Array;
 } = {};
 
 // tslint:disable-next-line
-let synth_midi: (arg0: Uint8Array) => Float32Array;
+export let synth_midi: (arg0: Uint8Array) => Float32Array;
 
 // tslint:disable-next-line
-let synth_midi_wav: (arg0: Uint8Array) => Uint8Array;
+export let synth_midi_wav: (arg0: Uint8Array) => Uint8Array;
 
 // tslint:disable-next-line
-let js_generator: (len: number, fn: any) => Float32Array;
+export let js_generator: (len: number, fn: any) => Float32Array;
 
 rust.then(obj => {
   js_generator = obj.js_generator;
@@ -48,14 +51,14 @@ rust.then(obj => {
   tones.ring = obj.ring;
 });
 
-const playTone = (name: keyof typeof tones) => {
+export const playTone = (name: keyof typeof tones) => {
   const samples = tones[name](10, 44100);
   playSamples(samples, 10, true);
 };
 
 const sources: AudioScheduledSourceNode[] = [];
 
-const playSamples = (
+export const playSamples = (
   samples: any,
   lengthSeconds: number = 10,
   cancel: boolean = false
@@ -90,6 +93,12 @@ export interface IWav {
 
 export interface IInnerAppState {
   generatorCode: string;
+  generatorError: string;
+  instrumentCode: string;
+  instrument: (f: number, d: number) => (t: number) => number;
+  // instrumentError: string;
+  instrumentDuration: number;
+  instrumentLock: boolean;
   wavs: IWav[];
   wavsInflight: number;
 }
@@ -110,6 +119,28 @@ t => {
   return 0.5 *  (sine(350)  +  sine(440));
 };
 `,
+      generatorError: "",
+      instrumentCode: `// Create your instrument!
+// This will only successfuly eval if it's valid
+// Check your console for errors
+
+// Takes in (freq: number, dur: number)
+// Returns a function (t: number), time
+// returning (amplitude: number) between -1 and 1
+
+(freq, dur) => t => {
+  // This is a square wave!
+  const sine = Math.sin(t * freq * 2 * Math.PI);
+  return (sine > 0 ? 1 : -1) * (dur - t);
+}
+`,
+      // tslint:disable-next-line
+      instrument: (freq, dur) => t => {
+        const sine = Math.sin(t * freq * 2 * Math.PI);
+        return (sine > 0 ? 1 : -1) * (dur - t);
+      },
+      instrumentLock: false,
+      instrumentDuration: 0.5,
       wavs: [],
       wavsInflight: 0
     };
@@ -130,7 +161,7 @@ t => {
             <a href="https://github.com/rustwasm/wasm-bindgen">wasm-bindgen</a>,
             and then hooked up using{" "}
             <a href="https://webpack.js.org/">webpack</a>. Checked to work on
-            Firefox, Chrome, and Edge.
+            Firefox, Chrome, Edge, and Safari.
           </p>
         </div>
 
@@ -270,6 +301,62 @@ t => {
               Generate for 5 seconds
             </button>
           </div>
+        </div>
+
+        <div className={styles.section}>
+          <h2>Or play an instrument</h2>
+          <textarea
+            spellCheck={false}
+            value={this.state.instrumentCode}
+            onChange={event => {
+              this.setState({ instrumentCode: event.target.value });
+
+              // tslint:disable-next-line
+              const instrument = eval(event.target.value);
+              if (instrument) {
+                this.setState({ instrument });
+              }
+            }}
+          />
+          <small className={styles.small}>
+            this textbox will be eval'd and passed into Rust!
+          </small>
+
+          <div style={{ margin: "var(--m-m) 0 var(--m-l) 0", display: "flex" }}>
+            <div>
+              Duration:{" "}
+              <input
+                className={styles.duration}
+                type="number"
+                step={0.1}
+                value={this.state.instrumentDuration}
+                onChange={event => {
+                  this.setState({
+                    instrumentDuration: parseFloat(event.target.value)
+                  });
+                }}
+              />{" "}
+              seconds
+            </div>
+            <label style={{ marginLeft: "var(--m-m)" }}>
+              <input
+                type="checkbox"
+                checked={this.state.instrumentLock}
+                onChange={event => {
+                  this.setState({
+                    instrumentLock: event.target.checked
+                  });
+                }}
+              />
+              Lock keyboard to page
+            </label>
+          </div>
+
+          <Piano
+            duration={this.state.instrumentDuration}
+            instrument={this.state.instrument || ((a, b) => c => 0.0)}
+            lockKeyboard={this.state.instrumentLock}
+          />
         </div>
 
         <div className={styles.section}>
