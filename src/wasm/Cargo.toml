@@ -8,12 +8,13 @@ edition = "2018"
 crate-type = ["cdylib"]
 
 [dependencies]
-wasm-bindgen = "0.2.27"
 js-sys = "0.3.4"
+lazy_static = "1.2.0"
+wasm-bindgen = "0.2.27"
 
 [dependencies.synthrs]
 git = "https://github.com/gyng/synthrs"
-rev = "436f69685b0d254a2d0e892648de2d64edffa301"
+rev = "551d564d2ded99f78998af514ecae5c6b2c100c2"
 
 [profile.release]
 lto = true
