@@ -53,7 +53,7 @@ module.exports = {
         ]
       },
       {
-        test: /\.(jpg|png|gif|mp4|webm|mp3|ogg|svg|mid)$/,
+        test: /\.(jpg|png|gif|mp4|webm|mp3|ogg|svg|mid|wav)$/,
         loader: "file-loader",
         options: {
           name: "./f/[hash:16].[ext]"
