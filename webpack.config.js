@@ -120,7 +120,7 @@ module.exports = {
     ...(PROD
       ? [
           new CompressionPlugin({
-            include: /\.(js|html|svg)$/
+            include: /\.(js|html|svg|wav)$/
           })
         ]
       : [])
