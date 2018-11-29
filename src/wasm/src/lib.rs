@@ -4,8 +4,9 @@ use wasm_bindgen::prelude::*;
 use std::io::Cursor;
 
 use synthrs::midi::read_midi;
+use synthrs::sample;
 use synthrs::synthesizer::{make_samples, make_samples_from_midi, quantize_samples};
-use synthrs::wave::{sine_wave, square_wave};
+use synthrs::wave::{sampler, sine_wave, square_wave};
 use synthrs::writer::write_wav;
 
 #[wasm_bindgen]
@@ -28,6 +29,34 @@ pub fn synth_midi_wav(midi_bytes: Box<[u8]>) -> Option<Box<[u8]>> {
     if let Ok(song) = read_midi(&mut cursor) {
         let samples: Vec<i16> =
             quantize_samples(&make_samples_from_midi(square_wave, 44_100, true, song).unwrap());
+
+        let mut wav_cursor = Cursor::new(Vec::new());
+        let _ = write_wav(&mut wav_cursor, 44_100, &samples);
+        let buf = wav_cursor.into_inner();
+
+        return Some(buf.into_boxed_slice());
+    }
+
+    None
+}
+
+#[wasm_bindgen]
+pub fn synth_midi_wav_with_sample(
+    midi_bytes: Box<[u8]>,
+    sample_bytes: Box<[u8]>,
+    original_frequency: f64,
+) -> Option<Box<[u8]>> {
+    let (samples, sample_len) =
+        sample::samples_from_wave_bytes(sample_bytes.to_vec()).unwrap_or(([].to_vec(), 0));
+    let sample_instrument =
+        |freq: f64| sampler(freq, &samples, sample_len, original_frequency, 44_100);
+
+    let mut cursor = Cursor::new(midi_bytes);
+
+    if let Ok(song) = read_midi(&mut cursor) {
+        let samples: Vec<i16> = quantize_samples(
+            &make_samples_from_midi(sample_instrument, 44_100, true, song).unwrap(),
+        );
 
         let mut wav_cursor = Cursor::new(Vec::new());
         let _ = write_wav(&mut wav_cursor, 44_100, &samples);

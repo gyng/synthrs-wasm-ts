@@ -1,6 +1,7 @@
 import * as React from "react";
 
-import { js_generator, playSamples } from "../App/App";
+import { js_generator } from "../App/App";
+import { playSamples } from "../App/audio";
 
 const styles = require("./styles.scss");
 

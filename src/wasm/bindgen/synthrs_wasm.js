@@ -138,6 +138,27 @@ export function synth_midi_wav(arg0) {
 
 /**
 * @param {Uint8Array} arg0
+* @param {Uint8Array} arg1
+* @param {number} arg2
+* @returns {Uint8Array}
+*/
+export function synth_midi_wav_with_sample(arg0, arg1, arg2) {
+    const [ptr0, len0] = passArray8ToWasm(arg0);
+    const [ptr1, len1] = passArray8ToWasm(arg1);
+    const retptr = globalArgumentPtr();
+    wasm.synth_midi_wav_with_sample(retptr, ptr0, len0, ptr1, len1, arg2);
+    const mem = getUint32Memory();
+    const rustptr = mem[retptr / 4];
+    const rustlen = mem[retptr / 4 + 1];
+    if (rustptr === 0) return;
+    const realRet = getArrayU8FromWasm(rustptr, rustlen).slice();
+    wasm.__wbindgen_free(rustptr, rustlen * 1);
+    return realRet;
+
+}
+
+/**
+* @param {Uint8Array} arg0
 * @returns {Float32Array}
 */
 export function synth_midi(arg0) {

@@ -74,3 +74,19 @@ details {
 .smallLink {
   color: inherit;
 }
+
+.instrumentSwitcher {
+  & .optionInstrument {
+    margin-right: var(--m-m);
+  }
+
+  width: 440px;
+  margin-top: var(--m-m);
+}
+
+.sampleInput {
+  width: 100%;
+  margin-top: var(--m-s);
+  border: solid 1px var(--grey-40);
+  padding: var(--m-m);
+}
