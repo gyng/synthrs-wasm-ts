@@ -43,7 +43,7 @@ export class MidiSection extends React.Component<{}, IMidiSectionState> {
     this.state = {
       instrument: MidiInstrument.Square,
       pianoSampleLoaded: false,
-      sample: { frequency: 110.0 },
+      sample: { frequency: 261.626 },
       wavs: [],
       wavsInflight: 0
     };
@@ -82,6 +82,11 @@ export class MidiSection extends React.Component<{}, IMidiSectionState> {
   public render() {
     const sampleInput = (
       <div className={styles.sampleInput}>
+        <div style={{ marginBottom: "var(--m-m)" }}>
+          {this.state.sample.bytes
+            ? `Using ${this.state.sample.filename}`
+            : "No sample loaded"}
+        </div>
         Upload a WAVE file to use as a sample
         <input
           type="file"
@@ -103,7 +108,7 @@ export class MidiSection extends React.Component<{}, IMidiSectionState> {
                   sample: {
                     bytes: new Uint8Array(reader.result),
                     filename: file.name,
-                    frequency: 261.626
+                    frequency: this.state.sample.frequency || 261.626
                   }
                 });
               }
