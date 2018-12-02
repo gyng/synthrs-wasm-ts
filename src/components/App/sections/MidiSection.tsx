@@ -57,7 +57,7 @@ export class MidiSection extends React.Component<{}, IMidiSectionState> {
         url: samplePiano
       },
       {
-        frequency: 262.0,
+        frequency: 261.626,
         name: "clarinet",
         url: sampleClarinet
       }
@@ -103,7 +103,7 @@ export class MidiSection extends React.Component<{}, IMidiSectionState> {
                   sample: {
                     bytes: new Uint8Array(reader.result),
                     filename: file.name,
-                    frequency: 110.0
+                    frequency: 261.626
                   }
                 });
               }
@@ -113,7 +113,7 @@ export class MidiSection extends React.Component<{}, IMidiSectionState> {
           }}
         />
         <div style={{ marginTop: "var(--m-m)" }}>
-          And specify its frequency (440.0 = middle C)
+          And specify its frequency (~261.626 = middle C)
           <input
             type="number"
             step="0.1"
